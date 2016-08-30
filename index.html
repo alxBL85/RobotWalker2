@@ -1,0 +1,55 @@
+<html>
+<head>
+  <meta charset = "utf-8"/>	
+  <script type="text/javascript" src="js/Basic.js"></script>
+  <script type="text/javascript" src="js/Sprite.js"></script>
+</head>
+
+<body>
+    A simple canvas showing how to draw some sprites using the class Sprite <br>
+	It just needs the location, the sprite file path and the context <br>
+    <canvas id="canvas1" width="500" height="400" style="border:1px solid black; background: gray"/>
+</body>
+
+<script>
+//global variables
+var canvas = document.getElementById("canvas1");
+var context = canvas.getContext('2d');
+var frameRate = 1000/30;
+
+//objects in the scene
+var sprite1;
+var spriteBlock1, spriteBlock2, spriteBlock3;
+
+
+//the function that initialices the scene:
+function setupScene()
+{
+ console.log("Starting Scene");
+ context.clearRect(0,0,canvas.width, canvas.height);
+
+ sprite1 = new Sprite(0,0,"./img/sprites/robot.png", context);
+ sprite1.setup("sprite", "robot"); 
+ sprite1.scale = 0.8;
+ sprite1.draw();
+
+ spriteBlock1 = new Sprite(50, 50, "./img/sprites/block1.png", context); 
+ spriteBlock1.setup("sprite","block1");
+ spriteBlock1.shift(50,5);
+ spriteBlock1.draw();
+ 
+ spriteBlock2 = new Sprite(150, 80, "./img/sprites/woodenBlock.png", context); 
+ spriteBlock2.setup("sprite","block2");
+ spriteBlock2.draw();
+ 
+ spriteBlock3 = new Sprite(150, 150, "./img/sprites/Ice_block.png", context); 
+ spriteBlock3.setup("sprite","block3");
+ spriteBlock3.draw(); 
+
+}
+
+//Here we call the main function:
+setupScene();
+</script>
+
+</html>
