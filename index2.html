@@ -1,0 +1,53 @@
+<html>
+<head>
+  <meta charset = "utf-8"/>	
+  <script type="text/javascript" src="js/Basic.js"></script>
+  <script type="text/javascript" src="js/Sprite.js"></script>
+  <script type="text/javascript" src="js/SpriteSheet.js"></script>
+</head>
+
+<body>
+    In this sample, we are drawing sprites using an spritesheet <br>
+	It just needs the location, the sprite file path, the index of column and row, and the context <br>
+    <canvas id="canvas1" width="500" height="400" style="border:1px solid black; background: gray"/>
+</body>
+
+<script>
+//global variables
+var canvas = document.getElementById("canvas1");
+var context = canvas.getContext('2d');
+var frameRate = 1000/30;
+
+//objects in the scene, two spritesheets
+var spriteRobot;
+var spriteEnemy;
+var spriteFireball;
+
+
+//the function that initialices the scene:
+function setupScene()
+{
+ console.log("Starting Scene");
+ context.clearRect(0,0,canvas.width, canvas.height);
+
+ spriteRobot = new SpriteSheet(100,100,1577,332,19, 4, "./img/sprites/robot_spritesheet_dlru.png", context);
+ spriteRobot.setup("spriteSheet", "robot");  
+ spriteRobot.draw(5,2);
+
+ spriteEnemy = new SpriteSheet(200, 200, 5120, 640, 16, 2, "./img/sprites/enemy_spritesheet.png", context); 
+ spriteEnemy.setup("spriteSheet", "enemy1");
+ spriteEnemy.sprite.scale = 0.3; //scaling
+ spriteEnemy.draw(1,1);
+ 
+ spriteFireball = new SpriteSheet(300,150, 512,512, 8, 8, "./img/sprites/fireball_spritesheet.png", context);
+ spriteFireball.setup("spriteSheet", "fireball1");
+ spriteFireball.sprite.shift(0,150); //shifting
+ spriteFireball.draw(3,1);
+ 
+ }
+
+//Here we call the main function:
+setupScene();
+</script>
+
+</html>

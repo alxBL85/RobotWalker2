@@ -1,29 +1,27 @@
 /*This is the basic class for every sprite used in the game
   it contains methods to define an sprite an draw it */
 
-var Sprite = function(x,y,spriteFile, context)
+var Sprite = function(x,y, width, height, spriteFile, context)
 {
  this.myBasic = null;
  this.x = x;
  this.y = y;
  this.scale = 1;
- this.width = 0; //this is taken from the image file size in the setup
- this.height = 0;
+ this.width = width; //this is taken from the image file size in the setup
+ this.height = height; //NO! it is not posible to know the size before the image is loaded >_<
  this.spriteFile = spriteFile;
  this.imgSprite = new Image();
- this.context= context;
+ this.ctx= context;
 };
 
 //---------------------------------------------------
 Sprite.prototype.setup = function(myType, myName)
 {
+	console.log("Sprite setup ["+myName+"]");
 	this.myBasic = new MyBasic(myType, myName); //for example: collider, block, hero, fireball, enemy, etc.
 	this.imgSprite.src = this.spriteFile;	
-	this.ctx = context;	
-	
+		
 	this.scale = 1;
-	this.width = this.imgSprite.width;
-	this.height = this.imgSprite.height;
 };
 
 //---------------------------------------------------
@@ -35,7 +33,7 @@ Sprite.prototype.draw = function()
   
  if(this.imgSprite.complete)
  { console.log("  complete");
-   this.ctx.drawImage(this, //the spritesheet image
+   this.ctx.drawImage(this.imgSprite, //the spritesheet image
                    0, //sx, where the I-frame starts in X
 				   0, //sy, where the I-frame starts in Y
                    this.width, //frame width
@@ -49,8 +47,6 @@ Sprite.prototype.draw = function()
  else
  { console.log("  not complete");	
    ctx = this.ctx;
-   w = this.width;
-   h = this.height;
    var scale = this.scale;
    //inside the function onload, the context of the function changes,
    //the function is defined inside the else and has no relationship
@@ -68,7 +64,7 @@ Sprite.prototype.draw = function()
    this.imgSprite.onload = function(){ //just remember that whenever you use onload you are creating another ambit                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
        	//inside onload, this. references to the imgSprite, not the object Sprite
 		console.log(" width: "+this.width+", height:"+this.height);
-		ctx.drawImage(this, //the spritesheet image
+		ctx.drawImage(this, //the sprite image
 							 0, //sx, where the I-frame starts in X
 							 0, //sy, where the I-frame starts in Y
                              this.width, //frame width
