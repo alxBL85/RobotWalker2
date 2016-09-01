@@ -98,3 +98,18 @@ SpriteSheet.prototype.draw = function(indX, indY)
 	 } //end of onload function
  	}	
 };
+
+//------------------------------------
+SpriteSheet.prototype.ticX = function()
+{
+ var ix = this.indexX;
+ this.indexX = 	(this.indexX >= this.totalColumns-1)? 0: this.indexX +1;
+ return ix;
+}
+
+SpriteSheet.prototype.ticY = function()
+{
+ var iy = this.indexY;
+ this.indexY = (this.indexY >= this.totalRows -1)? 0: this.indexY +1;
+ return iy;
+}
