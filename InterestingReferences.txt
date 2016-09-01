@@ -1,0 +1,3 @@
+some interesting references:
+
+https://github.com/federicojacobi/layeredCanvas/blob/master/layeredCanvas.js
