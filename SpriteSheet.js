@@ -33,14 +33,28 @@ SpriteSheet.prototype.setup = function(myType, myName)
 
 SpriteSheet.prototype.draw = function(indX, indY)
 {
-	console.log("drawing spritesheet:" + this.sprite.myBasic.myName);
+	//console.log("drawing spritesheet:" + this.sprite.myBasic.myName);
     
+    if((indX < 0 || indX >= this.totalColumns) || (indY < 0 || indY >= this.totalRows))
+	{
+	 console.log("Spriteshet drawing: Error indexes out of bounds: "+indX+","+indY);
+	 return;		
+	};
+		
 	var img = this.sprite.imgSprite;
-	
-	
+		
 	if(img.complete)
 	{
-	 console.log("    complete");
+	 /*console.log("    complete");
+	 console.log(" ctx:"+typeof(this.ctx));
+	 console.log(" frameWidth:" + this.frameWidth);
+	 console.log(" frameHeight:" + this.frameHeight);
+	 console.log(" x:" + this.sprite.x);
+	 console.log(" y:" + this.sprite.y);
+	 console.log(" indX:"+indX);
+	 console.log(" indY:"+indY);
+	 console.log(" s:" + this.sprite.scale);*/
+	 
      this.ctx.drawImage(img,
 	                    indX * this.frameWidth,
 						indY * this.frameHeight,
@@ -48,8 +62,8 @@ SpriteSheet.prototype.draw = function(indX, indY)
 						this.frameHeight,
 						this.sprite.x,
 						this.sprite.y,
-						this.frameWidth * this.scale,
-						this.frameHeight * this.scale
+						this.frameWidth * this.sprite.scale,
+						this.frameHeight * this.sprite.scale
 					    );		
 	}
 	else
