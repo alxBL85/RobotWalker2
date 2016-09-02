@@ -1,0 +1,89 @@
+<html>
+<head>
+  <meta charset = "utf-8"/>	
+  <script type="text/javascript" src="js/Basic.js"></script>
+  <script type="text/javascript" src="js/Sprite.js"></script>
+  <script type="text/javascript" src="js/SpriteSheet.js"></script>
+  <script type="text/javascript" src="js/ControlManager.js"></script>
+  <script type="text/javascript" src="js/Robot.js"></script>
+</head>
+
+<body>
+    here we create specific classes for each character<br>
+	Aso, we introduce the controlManager to use the keyboard<br>
+	And it is connected to the robot to move it <br>
+	<br>
+		
+    <canvas id="canvas1" width="500" height="400" style="border:1px solid black; background: gray"/>
+</body>
+
+<script>
+//global variables
+var canvas = document.getElementById("canvas1");
+var context = canvas.getContext('2d');
+var frameRate = 1000/30;
+
+//objects in the scene:
+var control;
+var robot;
+var spriteEnemy;
+var spriteFireball;
+
+
+//the function that initialices the scene:
+function setupScene()
+{
+ console.log("Setting up Scene");
+ 
+ //control to manage keyboard events
+ control = new ControlManager();
+ 
+ robot = new Robot();
+ robot.setup(100,100, context);  
+
+ //here we set the robot as the character to control with the keyboard
+ control.setup(robot);
+  
+ spriteEnemy = new SpriteSheet(200, 200, 5120, 640, 16, 2, "./img/sprites/enemy_spritesheet.png", context); 
+ spriteEnemy.setup("spriteSheet", "enemy1");
+ spriteEnemy.sprite.scale = 0.3; //scaling
+  
+ spriteFireball = new SpriteSheet(300,150, 512,512, 8, 8, "./img/sprites/fireball_spritesheet.png", context);
+ spriteFireball.setup("spriteSheet", "fireball1");
+ spriteFireball.sprite.shift(0,150); //shifting
+ 
+ 
+ }
+
+//------------------------------------------------------------------
+//HERE IS WHERE WE NOW DEAL WITH THE DRAWING OF SPRITES
+//now we use ticX and ticY
+function animate()
+{
+ //1. first we have to clean the canvas:
+ context.clearRect(0,0, canvas.width, canvas.height);
+ 
+ //for now we are going to manage the index of each sprite from here.
+ 
+ robot.draw();
+  
+ spriteEnemy.draw(spriteEnemy.indexX, 0);
+ spriteEnemy.ticX();
+ 
+ spriteFireball.draw(spriteFireball.ticX(), 0);
+}
+ 
+ 
+ 
+ 
+ 
+ 
+//Here we call the main function:
+setupScene();
+
+//IN THIS PLACE WE SET THE ANIMATION:
+//think of this as the roller of the movie:
+setInterval(animate, frameRate);
+</script>
+
+</html>
