@@ -40,6 +40,10 @@ ControlManager.prototype.keyDownHandler = function(e)
 	else if(e.keyCode == 38)//down keyCode
 	{
 		theCharacter.shift(0,-1);
+	}
+    else if(e.keyCode == 32)//space bar
+    {
+		theCharacter.fire(); //throws a fireball		
 	}	
 }
 

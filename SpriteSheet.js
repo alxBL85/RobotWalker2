@@ -16,7 +16,7 @@ var SpriteSheet = function(x,y, width, height, totalColumns, totalRows, spriteSh
  this.indexY = 0;
  this.sprite = new Sprite(x,y, width, height, spriteSheetSrc, context)
  this.ctx = context;
-  
+ this.speed = 1; //how fast it will be shifted.  
 };
 
 //----------------------------------------------------------
@@ -112,4 +112,12 @@ SpriteSheet.prototype.ticY = function()
  var iy = this.indexY;
  this.indexY = (this.indexY >= this.totalRows -1)? 0: this.indexY +1;
  return iy;
+}
+
+//-------------------------------------
+SpriteSheet.prototype.shift = function(sx, sy)
+{
+	this.sprite.shift(sx * this.speed, sy * this.speed);
+    this.x = this.sprite.x; //this code simplifies to get the sprite position
+	this.y = this.sprite.y; //instead to call to spriteSheet.sprite.x, use spriteSheet.x
 }

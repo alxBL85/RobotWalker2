@@ -1,0 +1,86 @@
+<html>
+<head>
+  <meta charset = "utf-8"/>	
+  <script type="text/javascript" src="js/Basic.js"></script>
+  <script type="text/javascript" src="js/Sprite.js"></script>
+  <script type="text/javascript" src="js/SpriteSheet.js"></script>
+  <script type="text/javascript" src="js/ControlManager.js"></script>
+  <script type="text/javascript" src="js/Robot.js"></script>
+  <script type="text/javascript" src="js/Fireball.js"></script>
+</head>
+
+<body>
+    Now we create the object Fireball<br>
+	ControlManager uses brake bar to make the robot trigger fireballs<br>
+	Robot contains now 3 instances of fireballs <br>
+	<br>
+		
+    <canvas id="canvas1" width="500" height="400" style="border:1px solid black; background: gray"/>
+</body>
+
+<script>
+//global variables
+var canvas = document.getElementById("canvas1");
+var context = canvas.getContext('2d');
+var frameRate = 1000/30;
+
+//objects in the scene:
+var control;
+var robot;
+var spriteEnemy;
+var fireball;
+
+
+//the function that initialices the scene:
+function setupScene()
+{
+ console.log("Setting up Scene");
+ 
+ //control to manage keyboard events
+ control = new ControlManager();
+ 
+ robot = new Robot();
+ robot.setup(100,100, context);  
+
+ //here we set the robot as the character to control with the keyboard
+ control.setup(robot);
+ 
+  
+ spriteEnemy = new SpriteSheet(200, 200, 5120, 640, 16, 2, "./img/sprites/enemy_spritesheet.png", context); 
+ spriteEnemy.setup("spriteSheet", "enemy1");
+ spriteEnemy.sprite.scale = 0.3; //scaling
+  
+ }
+
+//------------------------------------------------------------------
+//HERE IS WHERE WE NOW DEAL WITH THE DRAWING OF SPRITES
+//now we use ticX and ticY
+function animate()
+{
+ //1. first we have to clean the canvas:
+ context.clearRect(0,0, canvas.width, canvas.height);
+ 
+ //for now we are going to manage the index of each sprite from here.
+ 
+ robot.draw();
+  
+ spriteEnemy.draw(spriteEnemy.indexX, 0);
+ spriteEnemy.ticX();
+ 
+ 
+}
+ 
+ 
+ 
+ 
+ 
+ 
+//Here we call the main function:
+setupScene();
+
+//IN THIS PLACE WE SET THE ANIMATION:
+//think of this as the roller of the movie:
+setInterval(animate, frameRate);
+</script>
+
+</html>
