@@ -1,0 +1,139 @@
+<html>
+<head>
+  <meta charset = "utf-8"/>	
+  <script type="text/javascript" src="js/Basic.js"></script>
+  <script type="text/javascript" src="js/CircleCollider.js"></script>
+  <script type="text/javascript" src="js/SquareCollider.js"></script>
+  <script type="text/javascript" src="js/Sprite.js"></script>
+  <script type="text/javascript" src="js/SpriteSheet.js"></script>
+  <script type="text/javascript" src="js/ControlManager.js"></script>
+  <script type="text/javascript" src="js/Robot.js"></script>
+  <script type="text/javascript" src="js/Fireball.js"></script>
+</head>
+
+<body>
+    Now we introduce 2 basic colliders:<br>
+	CircleCollider is based on a circle area<br>
+	SquareCollider is based on a square area <br>
+	<br>
+		
+    <canvas id="canvas1" width="500" height="400" style="border:1px solid black; background: gray"/>
+</body>
+
+<script>
+//global variables
+var canvas = document.getElementById("canvas1");
+var context = canvas.getContext('2d');
+var frameRate = 1000/30;
+
+//objects in the scene:
+var control;
+var robot;
+var spriteEnemy;
+var fireball;
+var circle1;
+var circle2;
+var square1;
+var square2;
+
+//the function that initialices the scene:
+function setupScene()
+{
+ console.log("Setting up Scene");
+ 
+ circle1 = new CircleCollider(100,100, 25);
+ circle1.setup("circle1", context);
+ 
+ circle2 = new CircleCollider(400,175,50);
+ circle2.setup("circle2", context);
+ circle2.colorLine = "rgba(0, 255, 0, 0.5)";
+ 
+ square1 = new SquareCollider(150, 200, 50,50);
+ square1.setup("square1", context);
+ 
+ square2 = new SquareCollider(300, 225, 100,100);
+ square2.setup("square2", context);
+ square2.colorLine = "rgba(0, 255, 0, 0.5)";
+ 
+ console.log("circle 1: x1: "+circle1.x+", y1:"+circle1.y);
+ console.log("circle 2: x2: "+circle2.x+", y2:"+circle2.y);
+ console.log("distance :"+circle1.getDistance(circle2.x, circle2.y));
+ 
+ //control to manage keyboard events
+ control = new ControlManager();
+ 
+ robot = new Robot();
+ robot.setup(100,100, context);  
+
+ //here we set the robot as the character to control with the keyboard
+ control.setup(robot);
+ 
+  
+ spriteEnemy = new SpriteSheet(200, 200, 5120, 640, 16, 2, "./img/sprites/enemy_spritesheet.png", context); 
+ spriteEnemy.setup("spriteSheet", "enemy1");
+ spriteEnemy.sprite.scale = 0.3; //scaling
+  
+ }
+
+//------------------------------------------------------------------
+//HERE IS WHERE WE NOW DEAL WITH THE DRAWING OF SPRITES
+//now we use ticX and ticY
+function animate()
+{
+ //1. first we have to clean the canvas:
+ context.clearRect(0,0, canvas.width, canvas.height);
+ 
+ //for now we are going to manage the index of each sprite from here.
+ robot.draw();
+  
+ spriteEnemy.draw(spriteEnemy.indexX, 0);
+ spriteEnemy.ticX();
+ 
+ //here we emulate a colition
+ circle1.draw();
+ circle2.draw();
+  
+ if(circle1.isTouching(circle2))
+ {console.log("collition in circles!");}
+ else 
+ {
+  circle1.shift(1,0);
+  circle2.shift(-1,0);
+  console.log("distance circles: "+circle1.getDistance(circle2.x, circle2.y));
+ }
+ 
+ //Here we emulate another collition:
+ square1.draw();
+ square2.draw();
+ 
+ if(square1.isTouching(square2))
+ {
+  console.log("collion in squares!");
+ }
+ else
+ {
+  square1.shift(1,0);
+  square2.shift(-1,0);  
+ } 
+ 
+ //here we emulate the third collition between a circle and square:
+ if(square1.isTouching(circle2))
+ {
+  alert("colition between square and circle");
+ } 
+ 
+ 
+}//End of animator
+ 
+
+ 
+ 
+//Here we call the main function:
+setupScene();
+
+//IN THIS PLACE WE SET THE ANIMATION:
+//think of this as the roller of the movie:
+setInterval(animate, frameRate);
+</script>
+
+</html>
