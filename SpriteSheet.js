@@ -17,6 +17,9 @@ var SpriteSheet = function(x,y, width, height, totalColumns, totalRows, spriteSh
  this.sprite = new Sprite(x,y, width, height, spriteSheetSrc, context)
  this.ctx = context;
  this.speed = 1; //how fast it will be shifted.  
+ this.isdrawable = true;
+ 
+ this.collider; //now every character that uses a collider may use this 
 };
 
 //----------------------------------------------------------
@@ -25,7 +28,7 @@ SpriteSheet.prototype.setup = function(myType, myName)
 {
  this.sprite.setup(myType, myName);
  console.log("SpriteSheet.setup: frame size:" + this.frameWidth+"x"+this.frameHeight);
- 
+ this.isDrawable = true;
    
 };
 
@@ -34,7 +37,10 @@ SpriteSheet.prototype.setup = function(myType, myName)
 SpriteSheet.prototype.draw = function(indX, indY)
 {
 	//console.log("drawing spritesheet:" + this.sprite.myBasic.myName);
-    
+    if(!this.isDrawable){ return; }
+	
+	
+	
     if((indX < 0 || indX >= this.totalColumns) || (indY < 0 || indY >= this.totalRows))
 	{
 	 console.log("Spriteshet drawing: Error indexes out of bounds: "+indX+","+indY);
@@ -96,7 +102,12 @@ SpriteSheet.prototype.draw = function(indX, indY)
 		                );
 		 
 	 } //end of onload function
- 	}	
+ 	}
+
+    if(this.isCollidable())
+	{
+	 this.collider.draw();		
+	}		
 };
 
 //------------------------------------
@@ -120,4 +131,25 @@ SpriteSheet.prototype.shift = function(sx, sy)
 	this.sprite.shift(sx * this.speed, sy * this.speed);
     this.x = this.sprite.x; //this code simplifies to get the sprite position
 	this.y = this.sprite.y; //instead to call to spriteSheet.sprite.x, use spriteSheet.x
+    
+	//we also need to update the collider
+    if(this.isCollidable())
+	{
+	 this.collider.shift(sx * this.speed, sy * this.speed);
+	}		
+	
 }
+
+//------------------------------------
+SpriteSheet.prototype.isCollidable = function()
+{
+ return (this.collider != null);	
+}
+
+//----------------------------------------------
+//This method configures the collider with a standar configuration
+SpriteSheet.prototype.setupSquareCollider = function()
+{
+ this.collider = new SquareCollider(this.x, this.y, this.frameWidth, this.frameHeight);
+ this.collider.setup(this.sprite.myBasic.myName +".collider", this.ctx);
+ this.collider.isDrawable = true;}

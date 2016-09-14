@@ -45,8 +45,7 @@ SquareCollider.prototype.isTouching = function(otherCollider)
              || otherCollider.isIn(this.x + this.width, this.y)
              || otherCollider.isIn(this.x, this.y + this.height)
              || otherCollider.isIn(this.x + this.width, this.y + this.height));   			 
-	
-     
+	    
 	}
 	
 }
@@ -54,6 +53,8 @@ SquareCollider.prototype.isTouching = function(otherCollider)
 //-------------------------------------------------------
 SquareCollider.prototype.draw = function()
 {
+ if(!this.isDrawable){ return; }	
+	
  this.ctx.beginPath();
  this.ctx.rect(this.x, this.y, this.width, this.height);
  this.ctx.strokeStyle = this.colorLine;

@@ -1,0 +1,122 @@
+<html>
+<head>
+  <meta charset = "utf-8"/>	
+  <script type="text/javascript" src="js/Basic.js"></script>
+  <script type="text/javascript" src="js/CircleCollider.js"></script>
+  <script type="text/javascript" src="js/SquareCollider.js"></script>
+  <script type="text/javascript" src="js/Sprite.js"></script>
+  <script type="text/javascript" src="js/SpriteSheet.js"></script>
+  <script type="text/javascript" src="js/ControlManager.js"></script>
+  <script type="text/javascript" src="js/Robot.js"></script>
+  <script type="text/javascript" src="js/Fireball.js"></script>
+</head>
+
+<body>
+    Now we introduce the collider to every character<br>
+	The character a reference knows the kind of collider it needs<br>
+	A reference to a collider (if needed) <br>
+	A live meter, a
+	<br>
+		
+    <canvas id="canvas1" width="500" height="400" style="border:1px solid black; background: gray"/>
+</body>
+
+<script>
+//global variables
+var canvas = document.getElementById("canvas1");
+var context = canvas.getContext('2d');
+var frameRate = 1000/30;
+
+//objects in the scene:
+var control;
+var robot;
+var spriteEnemy;
+var fireball;
+var circle1;
+var square1;
+
+
+//the function that initialices the scene:
+function setupScene()
+{
+ console.log("Setting up Scene");
+ 
+ circle1 = new CircleCollider(300,100, 25);
+ circle1.setup("circle1", context);
+ circle1.colorLine = "rgba(0, 255, 0, 0.5)";
+ circle1.isDrawable = true;
+ 
+ square1 = new SquareCollider(150, 200, 50,50);
+ square1.setup("square1", context);
+ square1.colorLine = "rgba(0, 255, 0, 0.5)";
+ square1.isDrawable = true;
+ 
+ //control to manage keyboard events
+ control = new ControlManager();
+ 
+ robot = new Robot();
+ robot.setup(100,100, context);  
+
+ //here we set the robot as the character to control with the keyboard
+ control.setup(robot);
+ 
+  
+ spriteEnemy = new SpriteSheet(200, 200, 5120, 640, 16, 2, "./img/sprites/enemy_spritesheet.png", context); 
+ spriteEnemy.setup("spriteSheet", "enemy1");
+ spriteEnemy.sprite.scale = 0.3; //scaling
+  
+ }
+
+//------------------------------------------------------------------
+//HERE IS WHERE WE NOW DEAL WITH THE DRAWING OF SPRITES
+//now we use ticX and ticY
+function animate()
+{
+ //1. first we have to clean the canvas:
+ context.clearRect(0,0, canvas.width, canvas.height);
+ 
+ //for now we are going to manage the index of each sprite from here.
+ robot.draw();
+  
+ spriteEnemy.draw(spriteEnemy.indexX, 0);
+ spriteEnemy.ticX();
+ 
+ //here we emulate a colition
+ circle1.draw();  
+ if(circle1.isTouching(robot.spriteSheet.collider)
+  ||robot.spriteSheet.collider.isTouching(circle1))
+ {alert("collition in circles!");
+  robot.shift(-5,-5);
+ }
+ 
+ 
+ //Here we emulate another collition:
+ square1.draw();  
+ if(square1.isTouching(robot.spriteSheet.collider)
+  ||robot.spriteSheet.collider.isTouching(square1))
+ {
+  alert("collion in squares!");
+  robot.shift(-5,-5);
+ }
+ 
+ if(robot.fireball1 != null)
+ if(circle1.isTouching(robot.fireball1.spriteSheet.collider))
+ {
+  robot.fireball1.spriteSheet.isDrawable = false;
+ }
+ 
+ 
+}//End of animator
+ 
+
+ 
+ 
+//Here we call the main function:
+setupScene();
+
+//IN THIS PLACE WE SET THE ANIMATION:
+//think of this as the roller of the movie:
+setInterval(animate, frameRate);
+</script>
+
+</html>

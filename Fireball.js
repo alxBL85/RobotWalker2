@@ -15,6 +15,9 @@ Fireball.prototype.setup = function(x,y, direction, context)
  this.spriteSheet = new SpriteSheet(x,y, 512, 512, 8, 8, "./img/sprites/fireball_spritesheet.png", context);
  this.spriteSheet.setup("spriteSheet", "fireball");
  this.spriteSheet.speed = 4;
+ 
+ //we have to setup the collider for the spritesheet:
+ this.spriteSheet.setupSquareCollider();
 }
 
 //-------------------------------------------------------------

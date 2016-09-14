@@ -9,7 +9,7 @@ var Robot = function()
  this.lives = 5;
  this.directions = { down:0, left:1, right:2, up:3};
  this.direction = this.directions.down; //used for fireballs
-
+ 
  this.fireball1;
 };
 
@@ -18,7 +18,9 @@ Robot.prototype.setup = function(x,y, context)
 	this.spriteSheet = new SpriteSheet(x, y, 1577, 332, 19, 4, "./img/sprites/robot_spritesheet_dlru.png", context);	
     this.spriteSheet.speed = 2;
 	this.spriteSheet.setup("spriteSheet", "Robot");
-    
+     
+    //we have to setup the collider for the spritesheet	 
+	this.spriteSheet.setupSquareCollider();
 }
 
 //redefinition of method shift in SpriteSheet.
@@ -50,8 +52,7 @@ Robot.prototype.draw = function()
  if(this.fireball1 != null) //active
  {
   this.fireball1.draw();	 
- }
- 
+ } 
 }
 
 //------------------------------------------------------
